@@ -1,0 +1,21 @@
+{
+    "name": "gamringer/php-json-pointer",
+    "description": "PHP JSON Pointer (RFC6901) implementation",
+    "authors": [
+        {
+            "name": "Guillaume Amringer",
+            "email": "g.amringer@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "gamringer\\JSONPointer\\": "src/",
+            "gamringer\\JSONPointer\\Test\\": "tests/",
+            "gamringer\\JSONPointer\\Example\\": "examples/"
+        }
+    }
+}
+
