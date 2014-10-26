@@ -1,6 +1,9 @@
 {
     "name": "gamringer/php-json-pointer",
     "description": "PHP JSON Pointer (RFC6901) implementation",
+    "keywords": ["json", "json pointer", "RFC6901", "6901"],
+    "homepage": "https://github.com/gamringer/JSONPointer",
+    "license": "MIT",
     "authors": [
         {
             "name": "Guillaume Amringer",
