@@ -25,6 +25,11 @@ class Pointer
         $this->target = &$target;
     }
 
+    public function getTarget()
+    {
+        return $this->target;
+    }
+
     private function reference($path)
     {
         if (!isset($this->target)) {
