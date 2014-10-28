@@ -13,12 +13,20 @@
     "require": {
         "php": ">=5.4"
     },
+    "require-dev": {
+        "phpunit/phpunit" : "4.*"
+    },
     "autoload": {
         "psr-4": {
-            "gamringer\\JSONPointer\\": "src/",
+            "gamringer\\JSONPointer\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "gamringer\\JSONPointer\\Test\\": "tests/",
             "gamringer\\JSONPointer\\Example\\": "examples/"
         }
     }
+
 }
 
