@@ -54,6 +54,14 @@ class Pointer
 
         $tokens = explode('/', substr($path, 1));
         foreach ($tokens as $token) {
+
+            if(!(
+                gettype($target) === 'array'
+             || $target instanceof \ArrayAccess
+            )) {
+                throw new Exception('JSONPointer can only walk through Array or ArrayAccess instances');
+            }
+
             $token = $this->unescape($token);
             if (!isset($target[$token])) {
                 throw new Exception('Referenced value does not exist');
