@@ -16,7 +16,7 @@ $target = [
 
 $pointer = new \gamringer\JSONPointer\Pointer($target);
 
-echo $pointer->get("/foo");
+echo $pointer->get("/foo"); // ["bar", "baz"]
 echo $pointer->set("/qux", "corge");
-echo $pointer->get("/qux");
+echo $pointer->get("/qux"); // "corge"
 ```
