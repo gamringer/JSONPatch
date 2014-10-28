@@ -89,6 +89,10 @@ class Pointer
     {
         $token = (string) $token;
 
+        if (preg_match('/~[^01]/', $token)) {
+            throw new Exception('Invalid pointer syntax');
+        }
+
         $token = str_replace('~1', '/', $token);
         $token = str_replace('~0', '~', $token);
 
