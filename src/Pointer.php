@@ -33,7 +33,7 @@ class Pointer
     private function reference($path)
     {
         if (!isset($this->target)) {
-            return new Exception('No target defined');
+            throw new Exception('No target defined');
         }
 
         if (substr($path, 0, 1) === '#') {
