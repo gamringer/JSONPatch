@@ -3,7 +3,6 @@
 namespace gamringer\JSONPointer\Test;
 
 use \gamringer\JSONPointer\Pointer;
-use \gamringer\JSONPointer\Exception;
 
 class PointerTest extends \PHPUnit_Framework_TestCase
 {
@@ -64,7 +63,7 @@ class PointerTest extends \PHPUnit_Framework_TestCase
     /**
      * @depends testStoresTarget
      * @dataProvider invalidPathProvider
-     * @expectedException Exception
+     * @expectedException \gamringer\JSONPointer\Exception
      */
     public function testGetUnsetPathValue($path, Pointer $pointer)
     {
@@ -73,7 +72,7 @@ class PointerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @depends testStoresTarget
-     * @expectedException Exception
+     * @expectedException \gamringer\JSONPointer\Exception
      */
     public function testGetInvalidPathValue(Pointer $pointer)
     {
@@ -81,7 +80,7 @@ class PointerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Exception
+     * @expectedException \gamringer\JSONPointer\Exception
      */
 	public function testGetFromUnsetTarget()
 	{
