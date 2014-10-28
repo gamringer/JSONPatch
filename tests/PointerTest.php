@@ -1,11 +1,11 @@
 <?php
 
-namespace League\Skeleton\Test;
+namespace gamringer\JSONPointer\Test;
 
 use \gamringer\JSONPointer\Pointer;
 use \gamringer\JSONPointer\Exception;
 
-class ExampleTest extends \PHPUnit_Framework_TestCase
+class PointerTest extends \PHPUnit_Framework_TestCase
 {
 	/**
      * Tests that the pointer correctly stores and returns the target
