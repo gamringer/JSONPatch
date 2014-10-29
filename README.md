@@ -7,7 +7,12 @@ JSONPointer
 
 [![Test Coverage](https://codeclimate.com/github/gamringer/JSONPointer/badges/coverage.svg)](https://codeclimate.com/github/gamringer/JSONPointer)
 [![Code Climate](https://codeclimate.com/github/gamringer/JSONPointer/badges/gpa.svg)](https://codeclimate.com/github/gamringer/JSONPointer)
+
 [![Build Status](https://travis-ci.org/gamringer/JSONPointer.svg?branch=master)](https://travis-ci.org/gamringer/JSONPointer)
+
+[![Build Status](https://scrutinizer-ci.com/g/gamringer/JSONPointer/badges/build.png?b=master)](https://scrutinizer-ci.com/g/gamringer/JSONPointer/build-status/master)
+[![Code Coverage](https://scrutinizer-ci.com/g/gamringer/JSONPointer/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/gamringer/JSONPointer/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/gamringer/JSONPointer/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/gamringer/JSONPointer/?branch=master)
 
 A RFC6901 compliant JSON Pointer PHP implementation
 
