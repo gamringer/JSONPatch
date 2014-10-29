@@ -5,9 +5,6 @@ JSONPointer
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/9f14b6ae-8100-4c43-9084-b17f57165026/mini.png)](https://insight.sensiolabs.com/projects/9f14b6ae-8100-4c43-9084-b17f57165026)
 
-[![Test Coverage](https://codeclimate.com/github/gamringer/JSONPointer/badges/coverage.svg)](https://codeclimate.com/github/gamringer/JSONPointer)
-[![Code Climate](https://codeclimate.com/github/gamringer/JSONPointer/badges/gpa.svg)](https://codeclimate.com/github/gamringer/JSONPointer)
-
 [![Build Status](https://travis-ci.org/gamringer/JSONPointer.svg?branch=master)](https://travis-ci.org/gamringer/JSONPointer)
 
 [![Build Status](https://scrutinizer-ci.com/g/gamringer/JSONPointer/badges/build.png?b=master)](https://scrutinizer-ci.com/g/gamringer/JSONPointer/build-status/master)
