@@ -36,11 +36,7 @@ class Pointer
             throw new Exception('No target defined');
         }
 
-        if (substr($path, 0, 1) === '#') {
-            $path = urldecode(substr($path, 1));
-        } else {
-            $path = stripslashes($path);
-        }
+        $path = $this->getRawPath($path);
 
         if (empty($path)) {
             return new ReferencedValue($this->target);
@@ -50,25 +46,7 @@ class Pointer
             throw new Exception('Invalid pointer syntax');
         }
 
-        $target = &$this->target;
-
-        $tokens = explode('/', substr($path, 1));
-        foreach ($tokens as $token) {
-
-            if(!(
-                gettype($target) === 'array'
-             || $target instanceof \ArrayAccess
-            )) {
-                throw new Exception('JSONPointer can only walk through Array or ArrayAccess instances');
-            }
-
-            $token = $this->unescape($token);
-            if (!isset($target[$token])) {
-                throw new Exception('Referenced value does not exist');
-            }
-
-            $target = &$target[$token];
-        }
+        $target = &$this->walk($path);
 
         return new ReferencedValue($target);
     }
@@ -97,5 +75,41 @@ class Pointer
         $token = str_replace('~0', '~', $token);
 
         return $token;
+    }
+
+    private function getRawPath($path)
+    {
+        if (substr($path, 0, 1) === '#') {
+            $path = urldecode(substr($path, 1));
+        } else {
+            $path = stripslashes($path);
+        }
+
+        return $path;
+    }
+
+    private function &walk($path)
+    {
+        $target = &$this->target;
+
+        $tokens = explode('/', substr($path, 1));
+        foreach ($tokens as $token) {
+
+            if(!(
+                gettype($target) === 'array'
+             || $target instanceof \ArrayAccess
+            )) {
+                throw new Exception('JSONPointer can only walk through Array or ArrayAccess instances');
+            }
+
+            $token = $this->unescape($token);
+            if (!isset($target[$token])) {
+                throw new Exception('Referenced value does not exist');
+            }
+
+            $target = &$target[$token];
+        }
+
+        return $target;
     }
 }
