@@ -90,6 +90,8 @@ class Pointer
         $tokens = explode('/', substr($path, 1));
         foreach ($tokens as $token) {
 
+            $this->assertWalkable($target);
+
             $token = $this->unescape($token);
             if (!isset($target[$token])) {
                 throw new Exception('Referenced value does not exist');
@@ -105,7 +107,7 @@ class Pointer
     private function assertWalkable($item)
     {
         if(!(
-            gettype($itemtarget) === 'array'
+            gettype($item) === 'array'
          || $item instanceof \ArrayAccess
         )) {
             throw new Exception('JSONPointer can only walk through Array or ArrayAccess instances');
