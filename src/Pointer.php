@@ -15,12 +15,7 @@ class Pointer
 
     public function setTarget(&$target)
     {
-        if(!(
-            gettype($target) === 'array'
-         || $target instanceof \ArrayAccess
-        )) {
-            throw new \InvalidArgumentException('$target must be either an Array or ArrayAccess object');
-        }
+        $this->assertWalkable($target);
 
         $this->target = &$target;
     }
@@ -95,13 +90,6 @@ class Pointer
         $tokens = explode('/', substr($path, 1));
         foreach ($tokens as $token) {
 
-            if(!(
-                gettype($target) === 'array'
-             || $target instanceof \ArrayAccess
-            )) {
-                throw new Exception('JSONPointer can only walk through Array or ArrayAccess instances');
-            }
-
             $token = $this->unescape($token);
             if (!isset($target[$token])) {
                 throw new Exception('Referenced value does not exist');
@@ -110,6 +98,17 @@ class Pointer
             $target = &$target[$token];
         }
 
+
         return $target;
+    }
+
+    private function assertWalkable($item)
+    {
+        if(!(
+            gettype($target) === 'array'
+         || $target instanceof \ArrayAccess
+        )) {
+            throw new Exception('JSONPointer can only walk through Array or ArrayAccess instances');
+        }
     }
 }
