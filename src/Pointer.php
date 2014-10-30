@@ -105,8 +105,8 @@ class Pointer
     private function assertWalkable($item)
     {
         if(!(
-            gettype($target) === 'array'
-         || $target instanceof \ArrayAccess
+            gettype($itemtarget) === 'array'
+         || $item instanceof \ArrayAccess
         )) {
             throw new Exception('JSONPointer can only walk through Array or ArrayAccess instances');
         }
