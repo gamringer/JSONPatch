@@ -33,7 +33,7 @@ class PointerTest extends \PHPUnit_Framework_TestCase
 	/**
      * @dataProvider invalidTargetProvider
      * @depends testStoresTarget
-     * @expectedException \InvalidArgumentException
+     * @expectedException \gamringer\JSONPointer\Exception
      */
     public function testFailsInvalidTarget($target, Pointer $pointer)
     {
