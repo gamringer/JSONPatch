@@ -39,7 +39,7 @@ class Pointer
             return new ReferencedValue($this->target);
         }
 
-        if (substr($path, 0, 1) !== '/') {
+        if ($path[0] !== '/') {
             throw new Exception('Invalid pointer syntax');
         }
 
