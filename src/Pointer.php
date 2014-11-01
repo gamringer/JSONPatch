@@ -74,6 +74,8 @@ class Pointer
 
     private function getRawPath($path)
     {
+        $path = (string) $path;
+
         if (substr($path, 0, 1) === '#') {
             $path = urldecode(substr($path, 1));
         } else {
