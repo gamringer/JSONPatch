@@ -27,8 +27,6 @@ class Pointer
 
     private function reference($path)
     {
-        $path = (string) $path;
-
         if (!isset($this->target)) {
             throw new Exception('No target defined');
         }
