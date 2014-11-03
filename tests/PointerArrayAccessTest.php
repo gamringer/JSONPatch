@@ -5,7 +5,7 @@ namespace gamringer\JSONPointer\Test;
 use \gamringer\JSONPointer\Pointer;
 use \gamringer\JSONPointer\Test\Resources\ArrayAccessible;
 
-class PointerTestArrayAccess extends \PHPUnit_Framework_TestCase
+class PointerArrayAccessTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test getting value from Object as array
@@ -39,6 +39,23 @@ class PointerTestArrayAccess extends \PHPUnit_Framework_TestCase
         $pointer->set('/qux', 'corge');
         $this->assertEquals('corge', $pointer->get('/qux'));
         $this->assertEquals('corge', $target->qux);
+    }
+
+    /**
+     * Tests getting an unset path
+     *     
+     * @expectedException \gamringer\JSONPointer\Exception
+     */
+    public function testGetUnsetPathValue()
+    {
+        $attributes = [
+            'foo' => ['bar', 'baz'],
+            'qux' => 'quux'
+        ];
+        $target = new ArrayAccessible($attributes);
+        $pointer = new Pointer($target);
+
+        $pointer->get('/corge');
     }
 
 }
