@@ -58,6 +58,45 @@ class Pointer
         return $this;
     }
 
+    public function remove($path)
+    {
+        if (!isset($this->target)) {
+            throw new Exception('No target defined');
+        }
+
+        $path = $this->getRawPath($path);
+
+        if (empty($path)) {
+            $this->target = null;
+        }
+
+        if ($path[0] !== '/') {
+            throw new Exception('Invalid pointer syntax');
+        }
+
+        $target = &$this->target;
+
+        $tokens = explode('/', substr($path, 1));
+        $tcount = sizeof($tokens);
+        $i=0;
+        foreach ($tokens as $token) {
+            $i++;
+            $this->assertWalkable($target);
+
+            $token = $this->unescape($token);
+            if (!isset($target[$token])) {
+                throw new Exception('Referenced value does not exist');
+            }
+
+            if($i < $tcount){
+                $target = &$target[$token];
+            } else {
+                unset($target[$token]);
+            }
+
+        }
+    }
+
     private function unescape($token)
     {
         $token = (string) $token;
