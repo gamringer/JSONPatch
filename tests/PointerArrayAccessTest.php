@@ -42,6 +42,24 @@ class PointerArrayAccessTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test unsetting value from Object as array
+     * @expectedException \gamringer\JSONPointer\Exception
+     */
+    public function testUnsetPathValue()
+    {
+        $attributes = [
+            'foo' => ['bar', 'baz'],
+            'qux' => 'quux'
+        ];
+        $target = new ArrayAccessible($attributes);
+        $pointer = new Pointer($target);
+        
+        $this->assertEquals($attributes['qux'], $pointer->get('/qux'));
+        $pointer->remove('/qux');
+        $pointer->get('/qux');
+    }
+
+    /**
      * Tests getting an unset path
      *     
      * @expectedException \gamringer\JSONPointer\Exception

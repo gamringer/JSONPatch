@@ -62,6 +62,16 @@ class PointerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @depends testStoresTarget
+     * @expectedException \gamringer\JSONPointer\Exception
+     */
+    public function testUnsetPathValue(Pointer $pointer)
+    {
+        $pointer->remove('/foo');
+        $pointer->get('/foo');
+    }
+
+    /**
+     * @depends testStoresTarget
      * @dataProvider invalidPathProvider
      * @expectedException \gamringer\JSONPointer\Exception
      */
