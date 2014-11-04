@@ -76,4 +76,21 @@ class PointerArrayAccessTest extends \PHPUnit_Framework_TestCase
         $pointer->get('/corge');
     }
 
+    /**
+     * @expectedException \gamringer\JSONPointer\Exception
+     */
+    public function testUnsetRootValue()
+    {
+        $attributes = [
+            'foo' => ['bar', 'baz'],
+            'qux' => 'quux'
+        ];
+        $target = new ArrayAccessible($attributes);
+        $pointer = new Pointer($target);
+
+        $this->assertEquals($pointer->getTarget(), $target);
+        $pointer->remove('');
+        $this->assertEquals(null, $target);
+    }
+
 }

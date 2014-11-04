@@ -62,12 +62,56 @@ class PointerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @depends testStoresTarget
+     * @dataProvider unsetPathProvider
      * @expectedException \gamringer\JSONPointer\Exception
      */
-    public function testUnsetPathValue(Pointer $pointer)
+    public function testRemovePathValue($path, Pointer $pointer)
     {
-        $pointer->remove('/foo');
-        $pointer->get('/foo');
+        $pointer->remove($path);
+        $pointer->get($path);
+    }
+
+    /**
+     * @depends testStoresTarget
+     * @dataProvider unsetPathProvider
+     * @expectedException \gamringer\JSONPointer\Exception
+     */
+    public function testRemoveUnsetPathValue($path, Pointer $pointer)
+    {
+        $pointer->remove('/bar');
+    }
+
+    /**
+     * @expectedException \gamringer\JSONPointer\Exception
+     */
+    public function testUnsetRootValue()
+    {
+        $target = [
+            "foo" => ["bar", "baz"],
+            "" => 0,
+            "a/b" => 1,
+            "c%d" => 2,
+            "e^f" => 3,
+            "g|h" => 4,
+            "i\\j" => 5,
+            "k\"l" => 6,
+            " " => 7,
+            "m~n" => 8
+        ];
+        $pointer = new Pointer($target);
+
+        $this->assertEquals($pointer->getTarget(), $target);
+        $pointer->remove('');
+        $this->assertEquals(null, $target);
+    }
+
+    /**
+     * @depends testStoresTarget
+     * @expectedException \gamringer\JSONPointer\Exception
+     */
+    public function testInvalidUnsetPathValue(Pointer $pointer)
+    {
+        $pointer->remove('foo');
     }
 
     /**
@@ -141,12 +185,20 @@ class PointerTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-	public function invalidPathProvider()
+    public function invalidPathProvider()
+    {
+        return [
+            [addslashes("qux")],
+            [addslashes("/qux")],
+            [addslashes("/foo/0")],
+        ];
+    }
+
+	public function unsetPathProvider()
 	{
 		return [
-            [addslashes("qux")],
-			[addslashes("/qux")],
 			[addslashes("/foo/0")],
+            [addslashes("/foo")],
 		];
 	}
 }

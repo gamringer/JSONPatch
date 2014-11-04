@@ -27,18 +27,12 @@ class Pointer
 
     private function reference($path)
     {
-        if (!isset($this->target)) {
-            throw new Exception('No target defined');
-        }
+        $this->assertTarget();
 
         $path = $this->getRawPath($path);
 
         if (empty($path)) {
             return new ReferencedValue($this->target);
-        }
-
-        if ($path[0] !== '/') {
-            throw new Exception('Invalid pointer syntax');
         }
 
         $target = &$this->walk($path);
@@ -60,18 +54,12 @@ class Pointer
 
     public function remove($path)
     {
-        if (!isset($this->target)) {
-            throw new Exception('No target defined');
-        }
+        $this->assertTarget();
 
         $path = $this->getRawPath($path);
 
         if (empty($path)) {
             $this->target = null;
-        }
-
-        if ($path[0] !== '/') {
-            throw new Exception('Invalid pointer syntax');
         }
 
         $target = &$this->target;
@@ -81,8 +69,9 @@ class Pointer
         $i=0;
         foreach ($tokens as $token) {
             $i++;
+            
             $this->assertWalkable($target);
-
+            
             $token = $this->unescape($token);
             if (!isset($target[$token])) {
                 throw new Exception('Referenced value does not exist');
@@ -121,6 +110,10 @@ class Pointer
             $path = stripslashes($path);
         }
 
+        if (isset($path[0]) && $path[0] !== '/') {
+            throw new Exception('Invalid pointer syntax');
+        }
+
         return $path;
     }
 
@@ -152,6 +145,13 @@ class Pointer
          || $item instanceof \ArrayAccess
         )) {
             throw new Exception('JSONPointer can only walk through Array or ArrayAccess instances');
+        }
+    }
+
+    private function assertTarget()
+    {
+        if (!isset($this->target)) {
+            throw new Exception('No target defined');
         }
     }
 }
