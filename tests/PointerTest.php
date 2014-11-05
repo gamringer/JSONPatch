@@ -106,6 +106,33 @@ class PointerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests that root value can be replaced
+     */
+    public function testReplaceRootValue()
+    {
+        $target = [
+            "foo" => ["bar", "baz"],
+            "" => 0,
+            "a/b" => 1,
+            "c%d" => 2,
+            "e^f" => 3,
+            "g|h" => 4,
+            "i\\j" => 5,
+            "k\"l" => 6,
+            " " => 7,
+            "m~n" => 8
+        ];
+
+        $newTarget = 'foo';
+
+        $pointer = new Pointer($target);
+
+        $this->assertEquals($pointer->getTarget(), $target);
+        $pointer->set('', $newTarget);
+        $this->assertEquals($newTarget, $target);
+    }
+
+    /**
      * @depends testStoresTarget
      * @expectedException \gamringer\JSONPointer\Exception
      */
