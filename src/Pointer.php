@@ -35,7 +35,7 @@ class Pointer
             return new ReferencedValue($this->target);
         }
 
-        $target = &$this->walk($path);
+        return $this->walk($path);
 
         return new ReferencedValue($target);
     }
@@ -54,36 +54,9 @@ class Pointer
 
     public function remove($path)
     {
-        $this->assertTarget();
+        $this->reference($path)->unsetValue();
 
-        $path = $this->getRawPath($path);
-
-        if (empty($path)) {
-            $this->target = null;
-        }
-
-        $target = &$this->target;
-
-        $tokens = explode('/', substr($path, 1));
-        $tcount = sizeof($tokens);
-        $i=0;
-        foreach ($tokens as $token) {
-            $i++;
-            
-            $this->assertWalkable($target);
-            
-            $token = $this->unescape($token);
-            if (!isset($target[$token])) {
-                throw new Exception('Referenced value does not exist');
-            }
-
-            if($i < $tcount){
-                $target = &$target[$token];
-            } else {
-                unset($target[$token]);
-            }
-
-        }
+        return $this;
     }
 
     private function unescape($token)
@@ -117,23 +90,28 @@ class Pointer
         return $path;
     }
 
-    private function &walk($path)
+    private function walk($path)
     {
         $target = &$this->target;
 
         $tokens = explode('/', substr($path, 1));
-        foreach ($tokens as $token) {
+        while (true) {
+            $token = array_shift($tokens);
 
             $this->assertWalkable($target);
 
             $token = $this->unescape($token);
+
+            if (empty($tokens)) {
+                return new ReferencedValue($target, $token);
+            }
+
             if (!isset($target[$token])) {
                 throw new Exception('Referenced value does not exist');
             }
-
+            
             $target = &$target[$token];
         }
-
 
         return $target;
     }
