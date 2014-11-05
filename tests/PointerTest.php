@@ -82,7 +82,7 @@ class PointerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \gamringer\JSONPointer\Exception
+     * Tests that root value can be unset
      */
     public function testUnsetRootValue()
     {
