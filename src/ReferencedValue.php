@@ -31,17 +31,25 @@ class ReferencedValue
     {
         if ($this->token == null) {
             $this->owner = $value;
+
+            return $this;
         }
 
         $this->owner[$this->token] = $value;
+        
+        return $this;
     }
 
     public function unsetValue()
     {
         if ($this->token == null) {
             $this->owner = null;
+
+            return $this;
         }
 
         unset($this->owner[$this->token]);
+
+        return $this;
     }
 }
