@@ -100,7 +100,7 @@ class Pointer
             $token = $this->unescape($token);
 
             if (empty($tokens)) {
-                return new ReferencedValue($target, $token);
+                break;
             }
 
             if (!isset($target[$token])) {
@@ -109,8 +109,8 @@ class Pointer
             
             $target = &$target[$token];
         }
-
-        return $target;
+        
+        return new ReferencedValue($target, $token);
     }
 
     private function assertWalkable($item)
