@@ -92,9 +92,7 @@ class Pointer
         $target = &$this->target;
 
         $tokens = explode('/', substr($path, 1));
-        while (true) {
-            $token = array_shift($tokens);
-
+        while (($token = array_shift($tokens)) !== null) {
             $this->assertWalkable($target);
 
             $token = $this->unescape($token);
