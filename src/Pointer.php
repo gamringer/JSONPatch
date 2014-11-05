@@ -30,14 +30,11 @@ class Pointer
         $this->assertTarget();
 
         $path = $this->getRawPath($path);
-
         if (empty($path)) {
             return new ReferencedValue($this->target);
         }
 
         return $this->walk($path);
-
-        return new ReferencedValue($target);
     }
 
     public function get($path)
