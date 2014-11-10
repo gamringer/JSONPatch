@@ -95,20 +95,27 @@ class Pointer
         while (($token = array_shift($tokens)) !== null) {
             $this->assertWalkable($target);
 
-            $token = $this->unescape($token);
-
             if (empty($tokens)) {
                 break;
             }
 
-            if (!isset($target[$token])) {
-                throw new Exception('Referenced value does not exist');
-            }
-            
-            $target = &$target[$token];
+            $target = &$this->fetchTokenTargetFrom($target, $this->unescape($token));
         }
         
         return new ReferencedValue($target, $token);
+    }
+
+    private function &fetchTokenTargetFrom($target, $token)
+    {
+        switch (gettype($target)) {
+            case 'array':
+                return $target[$token];
+                
+            case 'object':
+                return $target->{$token};
+        }
+
+        throw new Exception('JSONPointer can only walk through Array or ArrayAccess instances');
     }
 
     private function assertWalkable($item)
