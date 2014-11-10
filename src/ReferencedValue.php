@@ -9,7 +9,6 @@ class ReferencedValue
 
     public function __construct(&$owner, $token = null)
     {
-
         if ($token !== null && !isset($owner[$token])) {
             throw new Exception('Referenced value does not exist');
         }
@@ -20,7 +19,7 @@ class ReferencedValue
 
     public function getValue()
     {
-        if ($this->token == null) {
+        if ($this->token === null) {
             return $this->owner;
         }
 
@@ -29,7 +28,7 @@ class ReferencedValue
 
     public function setValue($value)
     {
-        if ($this->token == null) {
+        if ($this->token === null) {
             $this->owner = $value;
 
             return $this;
@@ -42,7 +41,7 @@ class ReferencedValue
 
     public function unsetValue()
     {
-        if ($this->token == null) {
+        if ($this->token === null) {
             $this->owner = null;
 
             return $this;
