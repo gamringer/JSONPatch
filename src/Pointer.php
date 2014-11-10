@@ -93,15 +93,18 @@ class Pointer
 
         $tokens = explode('/', substr($path, 1));
         while (($token = array_shift($tokens)) !== null) {
-            $this->assertWalkable($target);
+
+            $token = $this->unescape($token);
 
             if (empty($tokens)) {
                 break;
             }
-
-            $target = &$this->fetchTokenTargetFrom($target, $this->unescape($token));
+            
+            $target = &$this->fetchTokenTargetFrom($target, $token);
         }
         
+        $this->assertWalkable($target);
+
         return new ReferencedValue($target, $token);
     }
 
