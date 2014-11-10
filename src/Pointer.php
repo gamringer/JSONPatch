@@ -99,10 +99,10 @@ class Pointer
             if (empty($tokens)) {
                 break;
             }
-            
+
             $target = &$this->fetchTokenTargetFrom($target, $token);
         }
-        
+
         $this->assertWalkable($target);
 
         return new ReferencedValue($target, $token);
@@ -113,7 +113,7 @@ class Pointer
         switch (gettype($target)) {
             case 'array':
                 return $target[$token];
-                
+
             case 'object':
                 return $target->{$token};
         }
