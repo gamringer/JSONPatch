@@ -155,6 +155,15 @@ class PointerTest extends \PHPUnit_Framework_TestCase
      * @depends testStoresTarget
      * @expectedException \gamringer\JSONPointer\Exception
      */
+    public function testGetUnattainablePathValue(Pointer $pointer)
+    {
+        $pointer->get('/foo/bar/0/1');
+    }
+
+    /**
+     * @depends testStoresTarget
+     * @expectedException \gamringer\JSONPointer\Exception
+     */
     public function testGetInvalidPathValue(Pointer $pointer)
     {
         $pointer->get('/q~ux');

@@ -13,13 +13,13 @@ class PointerArrayAccessTest extends \PHPUnit_Framework_TestCase
     public function testGetPathValue()
     {
         $attributes = [
-            'foo' => ['bar', 'baz'],
+            'foo' => new ArrayAccessible(['bar' => 'str1', 'baz' => 'str2']),
             'qux' => 'quux'
         ];
         $target = new ArrayAccessible($attributes);
         $pointer = new Pointer($target);
         
-        $this->assertEquals($attributes['foo'], $pointer->get('/foo'));
+        $this->assertEquals($attributes['foo']->bar, $pointer->get('/foo/bar'));
         $this->assertEquals($target->qux, $pointer->get('/qux'));
     }
 
