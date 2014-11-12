@@ -29,7 +29,7 @@ class Pointer
     {
         $this->assertTarget();
 
-        $path = $this->getRawPath($path);
+        $path = $this->getCleanPath($path);
         if (empty($path)) {
             return new ReferencedValue($this->target);
         }
@@ -70,21 +70,26 @@ class Pointer
         return $token;
     }
 
-    private function getRawPath($path)
+    private function getCleanPath($path)
     {
         $path = (string) $path;
 
-        if (substr($path, 0, 1) === '#') {
-            $path = urldecode(substr($path, 1));
-        } else {
-            $path = stripslashes($path);
-        }
-
-        if (isset($path[0]) && $path[0] !== '/') {
+        $path = $this->getRepresentedPath($path);
+        
+        if (!empty($path) && $path[0] !== '/') {
             throw new Exception('Invalid pointer syntax');
         }
 
         return $path;
+    }
+
+    private function getRepresentedPath($path)
+    {
+        if (substr($path, 0, 1) === '#') {
+            return urldecode(substr($path, 1));
+        }
+        
+        return stripslashes($path);
     }
 
     private function walk($path)
@@ -123,7 +128,7 @@ class Pointer
 
     private function assertWalkable($item)
     {
-        if(!(
+        if (!(
             gettype($item) === 'array'
          || $item instanceof \ArrayAccess
         )) {
