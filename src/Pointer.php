@@ -75,7 +75,7 @@ class Pointer
         $path = (string) $path;
 
         $path = $this->getRepresentedPath($path);
-        
+
         if (!empty($path) && $path[0] !== '/') {
             throw new Exception('Invalid pointer syntax');
         }
@@ -88,7 +88,7 @@ class Pointer
         if (substr($path, 0, 1) === '#') {
             return urldecode(substr($path, 1));
         }
-        
+
         return stripslashes($path);
     }
 
