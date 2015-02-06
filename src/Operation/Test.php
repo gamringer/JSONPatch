@@ -3,10 +3,24 @@
 namespace gamringer\JSONPatch\Operation;
 
 use gamringer\JSONPatch\Operation;
+use gamringer\JSONPointer\Pointer;
 
-class Test extends Operation implements Modifies
+class Test extends Operation implements Atomic
 {
-    public function apply()
+    private $value;
+
+    public function __construct($path, $value)
+    {
+        $this->path = $path;
+        $this->value = $value;
+    }
+
+    public function apply(Pointer $target)
+    {
+
+    }
+
+    public function revert(Pointer $target)
     {
 
     }

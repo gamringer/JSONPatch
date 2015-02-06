@@ -3,10 +3,24 @@
 namespace gamringer\JSONPatch\Operation;
 
 use gamringer\JSONPatch\Operation;
+use gamringer\JSONPointer\Pointer;
 
-class Move extends Operation implements Modifies
+class Move extends Operation implements Atomic
 {
-    public function apply()
+    private $from;
+
+    public function __construct($path, $from)
+    {
+        $this->path = $path;
+        $this->from = $from;
+    }
+
+    public function apply(Pointer $target)
+    {
+
+    }
+
+    public function revert(Pointer $target)
     {
 
     }

@@ -12,7 +12,7 @@ abstract class Operation
     const OP_MOVE = 'move';
     const OP_COPY = 'copy';
 
-    protected $target;
+    protected $path;
 
     public static function fromDecodedJSON($operationContent)
     {
@@ -34,14 +34,9 @@ abstract class Operation
         }
     }
 
-    public function getTarget()
+    public function getPath()
     {
-        return $this->target;
-    }
-
-    public function setTarget($target)
-    {
-        $this->target = $targets;
+        return $this->path;
     }
 
     private static function assertValidOperationContent($operationContent)
