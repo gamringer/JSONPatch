@@ -1,8 +1,8 @@
 {
-    "name": "gamringer/php-json-pointer",
-    "description": "PHP JSON Pointer (RFC6901) implementation",
-    "keywords": ["json", "json pointer", "RFC6901", "6901"],
-    "homepage": "https://github.com/gamringer/JSONPointer",
+    "name": "gamringer/php-json-patch",
+    "description": "PHP JSON Patch (RFC6902) implementation",
+    "keywords": ["json", "json patch", "RFC6902", "6902"],
+    "homepage": "https://github.com/gamringer/JSONPatch",
     "license": "MIT",
     "authors": [
         {
@@ -11,20 +11,21 @@
         }
     ],
     "require": {
-        "php": ">=5.4"
+        "php": ">=5.4",
+        "gamringer/php-json-pointer": ">=0.1"
     },
     "require-dev": {
         "phpunit/phpunit" : "4.*"
     },
     "autoload": {
         "psr-4": {
-            "gamringer\\JSONPointer\\": "src/"
+            "gamringer\\JSONPatch\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "gamringer\\JSONPointer\\Test\\": "tests/",
-            "gamringer\\JSONPointer\\Example\\": "examples/"
+            "gamringer\\JSONPatch\\Test\\": "tests/",
+            "gamringer\\JSONPatch\\Example\\": "examples/"
         }
     }
 

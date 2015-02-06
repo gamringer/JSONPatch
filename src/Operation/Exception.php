@@ -1,6 +1,6 @@
 <?php
 
-namespace gamringer\JSONPatch;
+namespace gamringer\JSONPatch\Operation;
 
 class Exception extends \Exception
 {
