@@ -30,6 +30,10 @@ class Test extends Operation implements Atomic
     private function assertEquals($expected, $actual)
     {
         switch (gettype($expected)) {
+            case 'object':
+                $this->assertObjectsEquals($expected, $actual);
+                break;
+
             case 'array':
                 $this->assertArraysEquals($expected, $actual);
                 break;
@@ -95,6 +99,21 @@ class Test extends Operation implements Atomic
 
         foreach ($expected as $i => $expectedValue) {
             $this->assertEquals($expectedValue, $actual[$i]);
+        }
+    }
+
+    public function assertObjectsEquals($expected, $actual)
+    {
+        if (gettype($actual) !== 'object') {
+            throw new Exception('Target value is not an object');
+        }
+
+        if (sizeof($expected) !== sizeof($actual)) {
+            throw new Exception('Target value size does not match expected value size');
+        }
+
+        foreach ($expected as $i => $expectedValue) {
+            $this->assertEquals($expectedValue, $actual->{$i});
         }
     }
 
