@@ -48,7 +48,7 @@ class Patch
         $this->operations = array_reverse($this->operations);
 
         try {
-            foreach ($operations as $operation) {
+            foreach ($this->operations as $operation) {
                 $operation->revert($jsonPointer);
             }
         } catch(Operation\Exception $e) {
