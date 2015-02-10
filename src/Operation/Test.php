@@ -83,6 +83,21 @@ class Test extends Operation implements Atomic
         }
     }
 
+    public function assertArraysEquals($expected, $actual)
+    {
+        if (gettype($actual) !== 'array') {
+            throw new Exception('Target value is not an array');
+        }
+
+        if (sizeof($expected) !== sizeof($actual)) {
+            throw new Exception('Target value size does not match expected value size');
+        }
+
+        foreach ($expected as $i => $expectedValue) {
+            $this->assertEquals($expectedValue, $actual[$i]);
+        }
+    }
+
     public function revert(Pointer $target)
     {
 
