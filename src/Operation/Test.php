@@ -131,7 +131,7 @@ class Test extends Operation implements Atomic
 
     private static function assertValidOperationContent($operationContent)
     {
-        if (!isset($operationContent->value)) {
+        if (!property_exists($operationContent, 'value')) {
             throw new Operation\Exception('"Test" Operations must contain a "value" member');
         }
     }
