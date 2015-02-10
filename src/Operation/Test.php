@@ -24,22 +24,28 @@ class Test extends Operation implements Atomic
             throw new Exception($e->getMessage(), null, $e);
         }
 
-        switch (gettype($this->value)) {
+        $this->assertEquals($this->value, $targetValue);
+    }
+
+    private function assertEquals($expected, $actual)
+    {
+        switch (gettype($expected)) {
             case 'array':
-                $this->assertArraysEquals($this->value, $targetValue);
+                $this->assertArraysEquals($expected, $actual);
                 break;
 
             case 'string':
-                $this->assertStringsEquals($this->value, $targetValue);
+                $this->assertStringsEquals($expected, $actual);
                 break;
 
             case 'double':
             case 'integer':
-                $this->assertNumbersEquals($this->value, $targetValue);
+                $this->assertNumbersEquals($expected, $actual);
                 break;
 
-            case 'bool':
-                $this->assertBoolEquals($this->value, $targetValue);
+            case 'boolean':
+            case 'NULL':
+                $this->assertLiteralEquals($expected, $actual);
                 break;
         }
     }
@@ -62,6 +68,17 @@ class Test extends Operation implements Atomic
         }
 
         if ($expected != $actual) {
+            throw new Exception('Target value does not match expected value');
+        }
+    }
+
+    public function assertLiteralEquals($expected, $actual)
+    {
+        if (!in_array(gettype($actual), ['boolean', 'NULL'])) {
+            throw new Exception('Target value is not a literal (true, false, null)');
+        }
+
+        if ($expected !== $actual) {
             throw new Exception('Target value does not match expected value');
         }
     }
