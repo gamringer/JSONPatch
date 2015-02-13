@@ -45,8 +45,8 @@ abstract class Operation
             throw new Operation\Exception('Operation Content is not an object');
         }
 
-        if (!isset($operationContent->op) || !isset($operationContent->path)) {
-            throw new Operation\Exception('All Operations must contain at least the "op" and "path" members');
+        if (!isset($operationContent->op)) {
+            throw new Operation\Exception('All Operations must contain exactly one "op" member');
         }
 
         if (!in_array($operationContent->op, ['test', 'add', 'remove', 'replace', 'move', 'copy'])) {
