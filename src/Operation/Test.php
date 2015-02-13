@@ -54,7 +54,7 @@ class Test extends Operation implements Atomic
         }
     }
 
-    public function assertStringsEquals($expected, $actual)
+    private function assertStringsEquals($expected, $actual)
     {
         if (gettype($actual) !== 'string') {
             throw new Exception('Target value is not a string');
@@ -65,7 +65,7 @@ class Test extends Operation implements Atomic
         }
     }
 
-    public function assertNumbersEquals($expected, $actual)
+    private function assertNumbersEquals($expected, $actual)
     {
         if (!in_array(gettype($actual), ['integer', 'double'])) {
             throw new Exception('Target value is not a number');
@@ -76,7 +76,7 @@ class Test extends Operation implements Atomic
         }
     }
 
-    public function assertLiteralEquals($expected, $actual)
+    private function assertLiteralEquals($expected, $actual)
     {
         if (!in_array(gettype($actual), ['boolean', 'NULL'])) {
             throw new Exception('Target value is not a literal (true, false, null)');
@@ -87,7 +87,7 @@ class Test extends Operation implements Atomic
         }
     }
 
-    public function assertArraysEquals($expected, $actual)
+    private function assertArraysEquals($expected, $actual)
     {
         if (gettype($actual) !== 'array') {
             throw new Exception('Target value is not an array');
@@ -102,7 +102,7 @@ class Test extends Operation implements Atomic
         }
     }
 
-    public function assertObjectsEquals($expected, $actual)
+    private function assertObjectsEquals($expected, $actual)
     {
         if (gettype($actual) !== 'object') {
             throw new Exception('Target value is not an object');
