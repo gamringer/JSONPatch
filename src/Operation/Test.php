@@ -108,12 +108,20 @@ class Test extends Operation implements Atomic
             throw new Exception('Target value is not an object');
         }
 
-        if (sizeof($expected) !== sizeof($actual)) {
+        if (sizeof(get_object_vars($expected)) !== sizeof(get_object_vars($actual))) {
             throw new Exception('Target value size does not match expected value size');
         }
 
         foreach ($expected as $i => $expectedValue) {
+            $this->assertObjectHas($i, $actual);
             $this->assertEquals($expectedValue, $actual->{$i});
+        }
+    }
+
+    private function assertObjectHas($property, $object)
+    {
+        if (!property_exists($object, $property)) {
+            throw new Exception('Property missing from the target: '.$property);
         }
     }
 
