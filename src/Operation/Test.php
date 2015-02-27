@@ -12,8 +12,17 @@ class Test extends Operation implements Atomic
 
     public function __construct($path, $value)
     {
+        $this->assertValueTestability($value);
+
         $this->path = $path;
         $this->value = $value;
+    }
+
+    public function assertValueTestability($value)
+    {
+        if (!in_array(gettype($value), ['object', 'array', 'string', 'double', 'integer', 'boolean', 'NULL'])) {
+            throw new Exception('Value is not a valid type');
+        }
     }
 
     public function apply(Pointer $target)

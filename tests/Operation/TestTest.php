@@ -19,6 +19,16 @@ class TestTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests that an invalid Test Operation is constructed with errors
+     *
+     * @expectedException \gamringer\JSONPatch\Operation\Exception
+     */
+    public function testInvalidCreation()
+    {
+        $operation = new Operation\Test('/foo', tmpfile());
+    }
+
+    /**
      * Tests that a valid Test Operation is constructed without errors
      *
      * @dataProvider testOperationProvider
