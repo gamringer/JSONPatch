@@ -49,8 +49,9 @@ abstract class Operation
             throw new Operation\Exception('All Operations must contain exactly one "op" member');
         }
 
-        if (!in_array($operationContent->op, ['test', 'add', 'remove', 'replace', 'move', 'copy'])) {
-            throw new Operation\Exception('Operation must be one of "test", "add", "remove", "replace", "move", "copy"');
+        $possibleOperations = [OP_TEST, OP_ADD, OP_REMOVE, OP_REPLACE, OP_MOVE, OP_COPY];
+        if (!in_array($operationContent->op, $possibleOperations)) {
+            throw new Operation\Exception('Operation must be one of "'.implode('", "', $possibleOperations).'"');
         }
     }
 }
