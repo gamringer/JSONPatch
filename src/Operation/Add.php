@@ -4,25 +4,51 @@ namespace gamringer\JSONPatch\Operation;
 
 use gamringer\JSONPatch\Operation;
 use gamringer\JSONPointer\Pointer;
+use gamringer\JSONPointer;
+use gamringer\JSONPointer\VoidValue;
 
 class Add extends Operation implements Atomic
 {
     private $value;
 
+    private $previousValueExists;
+    private $previousValue;
+
     public function __construct($path, $value)
     {
+        $this->assertValueAddability($value);
+
         $this->path = $path;
         $this->value = $value;
     }
 
+    public function assertValueAddability($value)
+    {
+        if (!in_array(gettype($value), ['object', 'array', 'string', 'double', 'integer', 'boolean', 'NULL'])) {
+            throw new Exception('Value is not a valid type');
+        }
+    }
+
     public function apply(Pointer $target)
     {
-
+        try {
+            $this->previousValue = $target->insert($this->path, $this->value);
+        } catch (JSONPointer\Exception $e) {
+            throw new Exception($e->getMessage(), null, $e);
+        }
     }
 
     public function revert(Pointer $target)
     {
-
+        try {
+            if ($this->previousValue instanceof VoidValue) {
+                $target->remove(preg_replace('/\/-$/', '/'.$this->previousValue->getTarget(), $this->path));
+            } else {
+                $target->set($this->path, $this->previousValue);
+            }
+        } catch (JSONPointer\Exception $e) {
+            throw new Exception($e->getMessage(), null, $e);
+        }
     }
 
     public static function fromDecodedJSON($operationContent)
@@ -34,8 +60,18 @@ class Add extends Operation implements Atomic
 
     private static function assertValidOperationContent($operationContent)
     {
-        if (!isset($operationContent->value)) {
-            throw new Operation\Exception('"Add" Operations must contain a "value" member');
+        if (!property_exists($operationContent, 'path') || !property_exists($operationContent, 'value')) {
+            throw new Operation\Exception('"Add" Operations must contain a "path" and "value" member');
+        }
+    }
+
+    private function storePreviousValue(Pointer $target)
+    {
+        try {
+            $this->previousValue = $target->get($this->path);
+            $this->previousValueExists = true;
+        } catch (JSONPointer\Exception $e) {
+            $this->previousValueExists = false;
         }
     }
 }
