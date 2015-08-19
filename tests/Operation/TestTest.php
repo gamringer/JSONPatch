@@ -31,7 +31,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests that a valid Test Operation is constructed without errors
      *
-     * @dataProvider testOperationProvider
+     * @dataProvider OperationProvider
      */
     public function testStaticCreation($operationDescription)
     {
@@ -41,7 +41,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests that an empty patch is succesfully rendered to string
      *
-     * @dataProvider testInvalidOperationProvider
+     * @dataProvider InvalidOperationProvider
      * @expectedException \gamringer\JSONPatch\Operation\Exception
      */
     public function testInvalidStaticCreation($operationDescription)
@@ -64,7 +64,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests that objects get tested properly
      *
-     * @dataProvider testOperationApplyContentProvider
+     * @dataProvider OperationApplyContentProvider
      */
     public function testApply($operationDescription, $target)
     {
@@ -76,7 +76,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests that objects gets reverted properly
      *
-     * @dataProvider testOperationApplyContentProvider
+     * @dataProvider OperationApplyContentProvider
      */
     public function testRevert($operationDescription, $target)
     {
@@ -92,7 +92,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests that objects get tested properly
      *
-     * @dataProvider testOperationApplyInvalidStringContentProvider
+     * @dataProvider OperationApplyInvalidStringContentProvider
      * @expectedException \gamringer\JSONPatch\Operation\Exception
      */
     public function testApplyInvalidString($operationDescription, $target)
@@ -105,7 +105,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests that objects get tested properly
      *
-     * @dataProvider testOperationApplyInvalidNumberContentProvider
+     * @dataProvider OperationApplyInvalidNumberContentProvider
      * @expectedException \gamringer\JSONPatch\Operation\Exception
      */
     public function testApplyInvalidNumber($operationDescription, $target)
@@ -118,7 +118,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests that objects get tested properly
      *
-     * @dataProvider testOperationApplyInvalidLiteralContentProvider
+     * @dataProvider OperationApplyInvalidLiteralContentProvider
      * @expectedException \gamringer\JSONPatch\Operation\Exception
      */
     public function testApplyInvalidLiteral($operationDescription, $target)
@@ -131,7 +131,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests that objects get tested properly
      *
-     * @dataProvider testOperationApplyInvalidArrayContentProvider
+     * @dataProvider OperationApplyInvalidArrayContentProvider
      * @expectedException \gamringer\JSONPatch\Operation\Exception
      */
     public function testApplyInvalidArray($operationDescription, $target)
@@ -144,7 +144,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests that objects get tested properly
      *
-     * @dataProvider testOperationApplyInvalidObjectContentProvider
+     * @dataProvider OperationApplyInvalidObjectContentProvider
      * @expectedException \gamringer\JSONPatch\Operation\Exception
      */
     public function testApplyInvalidObject($operationDescription, $target)
@@ -154,7 +154,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         $operation->apply($pointer);
     }
 
-    public function testOperationProvider()
+    public function OperationProvider()
     {
         return [
             [json_decode('{"path":"/foo", "value":"test1"}')],
@@ -170,7 +170,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testInvalidOperationProvider()
+    public function InvalidOperationProvider()
     {
         return [
             [json_decode('{"path":"/foo"}')],
@@ -178,7 +178,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testOperationApplyContentProvider()
+    public function OperationApplyContentProvider()
     {
         return [
             [json_decode('{"path":"/foo", "value":"test1"}'), ['foo'=>"test1"]],
@@ -194,7 +194,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testOperationApplyInvalidStringContentProvider()
+    public function OperationApplyInvalidStringContentProvider()
     {
         return [
             //  Same Type, different value
@@ -210,7 +210,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testOperationApplyInvalidNumberContentProvider()
+    public function OperationApplyInvalidNumberContentProvider()
     {
         return [
             //  Same Type, different value
@@ -226,7 +226,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testOperationApplyInvalidLiteralContentProvider()
+    public function OperationApplyInvalidLiteralContentProvider()
     {
         return [
             //  Same Type, different value
@@ -247,7 +247,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testOperationApplyInvalidArrayContentProvider()
+    public function OperationApplyInvalidArrayContentProvider()
     {
         return [
             //  Same Type, different value
@@ -266,7 +266,7 @@ class TestTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    public function testOperationApplyInvalidObjectContentProvider()
+    public function OperationApplyInvalidObjectContentProvider()
     {
         $obj = new \stdClass();
         $obj->foo = 'bar';
