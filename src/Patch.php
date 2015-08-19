@@ -65,7 +65,7 @@ class Patch
     {
         $operations = [];
 
-        return json_encode($operations);
+        return json_encode($this->operations);
     }
 
     private static function assertValidPatchContent($patchContent)
