@@ -81,6 +81,7 @@ class AddTest extends \PHPUnit_Framework_TestCase
      * Tests that objects gets reverted properly
      *
      * @dataProvider OperationApplyReplaceContentProvider
+     * @group wip
      */
     public function testRevert($operationDescription, $target, $expected, $path)
     {
@@ -187,17 +188,18 @@ class AddTest extends \PHPUnit_Framework_TestCase
     public function OperationApplyReplaceContentProvider()
     {
         return [
-            //[json_decode('{"path":"/foo", "value":"test1"}'), ['foo'=>null], "test1", '/foo'],
-            //[json_decode('{"path":"/foo", "value":"1"}'), ['foo'=>null], "1", '/foo'],
-            //[json_decode('{"path":"/foo", "value":1}'), ['foo'=>null], 1, '/foo'],
-            //[json_decode('{"path":"/foo", "value":0}'), ['foo'=>null], 0, '/foo'],
-            //[json_decode('{"path":"/foo", "value":0.23}'), ['foo'=>null], 0.23, '/foo'],
-            //[json_decode('{"path":"/foo", "value":null}'), ['foo'=>'foo'], null, '/foo'],
-            //[json_decode('{"path":"/foo", "value":true}'), ['foo'=>null], true, '/foo'],
-            //[json_decode('{"path":"/foo", "value":false}'), ['foo'=>null], false, '/foo'],
-            //[json_decode('{"path":"/foo", "value":[1, 2, 3]}'), ['foo'=>null], [1, 2, 3], '/foo'],
-            //[json_decode('{"path":"/foo", "value":{"bar": "baz"}}'), ['foo'=>null], json_decode('{"bar": "baz"}'), '/foo'],
-            //[json_decode('{"path":"/foo/1", "value":true}'), ['foo'=>['a','b']], true, '/foo/1'],
+            [json_decode('{"path":"/foo", "value":"test1"}'), [], "test1", '/foo'],
+            [json_decode('{"path":"/foo", "value":"test1"}'), ['foo'=>null], "test1", '/foo'],
+            [json_decode('{"path":"/foo", "value":"1"}'), ['foo'=>null], "1", '/foo'],
+            [json_decode('{"path":"/foo", "value":1}'), ['foo'=>null], 1, '/foo'],
+            [json_decode('{"path":"/foo", "value":0}'), ['foo'=>null], 0, '/foo'],
+            [json_decode('{"path":"/foo", "value":0.23}'), ['foo'=>null], 0.23, '/foo'],
+            [json_decode('{"path":"/foo", "value":null}'), ['foo'=>'foo'], null, '/foo'],
+            [json_decode('{"path":"/foo", "value":true}'), ['foo'=>null], true, '/foo'],
+            [json_decode('{"path":"/foo", "value":false}'), ['foo'=>null], false, '/foo'],
+            [json_decode('{"path":"/foo", "value":[1, 2, 3]}'), ['foo'=>null], [1, 2, 3], '/foo'],
+            [json_decode('{"path":"/foo", "value":{"bar": "baz"}}'), ['foo'=>null], json_decode('{"bar": "baz"}'), '/foo'],
+            [json_decode('{"path":"/foo/1", "value":true}'), ['foo'=>['a','b']], true, '/foo/1'],
             [json_decode('{"path":"/foo/-", "value":true}'), ['foo'=>['a','b']], true, '/foo/2'],
         ];
     }

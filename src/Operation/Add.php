@@ -40,14 +40,10 @@ class Add extends Operation implements Atomic
 
     public function revert(Pointer $target)
     {
-        try {
-            if ($this->previousValue instanceof VoidValue) {
-                $target->remove(preg_replace('/\/-$/', '/'.$this->previousValue->getTarget(), $this->path));
-            } else {
-                $target->set($this->path, $this->previousValue);
-            }
-        } catch (JSONPointer\Exception $e) {
-            throw new Exception($e->getMessage(), null, $e);
+        if ($this->previousValue instanceof VoidValue) {
+            $target->remove(preg_replace('/\/-$/', '/'.$this->previousValue->getTarget(), $this->path));
+        } else {
+            $target->set($this->path, $this->previousValue);
         }
     }
 
@@ -62,16 +58,6 @@ class Add extends Operation implements Atomic
     {
         if (!property_exists($operationContent, 'path') || !property_exists($operationContent, 'value')) {
             throw new Operation\Exception('"Add" Operations must contain a "path" and "value" member');
-        }
-    }
-
-    private function storePreviousValue(Pointer $target)
-    {
-        try {
-            $this->previousValue = $target->get($this->path);
-            $this->previousValueExists = true;
-        } catch (JSONPointer\Exception $e) {
-            $this->previousValueExists = false;
         }
     }
 }
