@@ -52,7 +52,7 @@ class RemoveTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests that objects get appended properly
+     * Tests that objects get removed properly
      *
      * @expectedException \gamringer\JSONPointer\Exception
      * @dataProvider OperationApplyProvider
@@ -76,12 +76,10 @@ class RemoveTest extends \PHPUnit_Framework_TestCase
      * Tests that objects gets reverted properly
      *
      * @dataProvider OperationRevertProvider
-     * @group wip
      */
-    public function testRevert($operationDescription, $target, $path)
+    public function testRevert($operationDescription, $target, $expected)
     {
         $control = json_encode($target);
-        
         $pointer = new Pointer($target);
         $operation = Operation\Remove::fromDecodedJSON($operationDescription);
         
@@ -91,15 +89,10 @@ class RemoveTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('Apply did not work.');
         }
 
-        try {
-            $pointer->get($path);
-            $this->markTestSkipped('Apply did not work.');
-        } catch (\gamringer\JSONPointer\Exception $e) {
-        }
-
-        $operation->revert($pointer);
+        $this->assertEquals(json_encode($pointer->getTarget()), $expected);
         
-        $this->assertEquals($control, json_encode($target));
+        $operation->revert($pointer);
+        $this->assertEquals(json_encode($pointer->getTarget()), $control);
     }
 
     /**
@@ -111,37 +104,28 @@ class RemoveTest extends \PHPUnit_Framework_TestCase
     public function testApplyInvalidPath($operationDescription, $target)
     {
         $pointer = new Pointer($target);
-        $operation = Operation\Test::fromDecodedJSON($operationDescription);
+        $operation = Operation\Remove::fromDecodedJSON($operationDescription);
         $operation->apply($pointer);
     }
 
     public function OperationProvider()
     {
         return [
-            [json_decode('{"path":"/foo", "value":"test1"}')],
-            [json_decode('{"path":"/foo", "value":"1"}')],
-            [json_decode('{"path":"/foo", "value":1}')],
-            [json_decode('{"path":"/foo", "value":0}')],
-            [json_decode('{"path":"/foo", "value":0.23}')],
-            [json_decode('{"path":"/foo", "value":null}')],
-            [json_decode('{"path":"/foo", "value":true}')],
-            [json_decode('{"path":"/foo", "value":false}')],
-            [json_decode('{"path":"/foo", "value":[1, 2, 3]}')],
-            [json_decode('{"path":"/foo", "value":{"bar": "baz"}}')],
+            [json_decode('{"path":"/foo"}')],
         ];
     }
 
     public function OperationRevertProvider()
     {
         return [
-            //[json_decode('{"path":"/foo"}'), ['foo'=>null], '/foo'],
-            [json_decode('{"path":"/foo"}'), ['foo'=>true], '/foo'],
-            //[json_decode('{"path":"/foo"}'), ['foo'=>'a'], '/foo'],
-            //[json_decode('{"path":"/foo"}'), ['foo'=>['a', 'b']], '/foo'],
-            //[json_decode('{"path":"/foo"}'), ['foo'=>new \stdClass()], '/foo'],
-            //[json_decode('{"path":"/foo/0"}'), ['foo'=>['a', 'b', 'c']], '/foo/1'],
-            //[json_decode('{"path":"/foo/1"}'), ['foo'=>['a', 'b', 'c']], '/foo/2'],
-            //[json_decode('{"path":"/foo/2"}'), ['foo'=>['a', 'b', 'c']], '/foo/3'],
+            [json_decode('{"path":"/foo"}'), ['foo'=>null], json_encode([])],
+            [json_decode('{"path":"/foo"}'), ['foo'=>true], json_encode([])],
+            [json_decode('{"path":"/foo"}'), ['foo'=>'a'], json_encode([])],
+            [json_decode('{"path":"/foo"}'), ['foo'=>['a', 'b']], json_encode([])],
+            [json_decode('{"path":"/foo"}'), ['foo'=>new \stdClass()], json_encode([])],
+            [json_decode('{"path":"/foo/0"}'), ['foo'=>['a', 'b', 'c']], json_encode(['foo'=>['b', 'c']])],
+            [json_decode('{"path":"/foo/1"}'), ['foo'=>['a', 'b', 'c']], json_encode(['foo'=>['a', 'c']])],
+            [json_decode('{"path":"/foo/2"}'), ['foo'=>['a', 'b', 'c']], json_encode(['foo'=>['a', 'b']])],
         ];
     }
 
