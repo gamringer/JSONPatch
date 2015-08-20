@@ -8,6 +8,8 @@ use gamringer\JSONPointer;
 
 class Remove extends Operation implements Atomic
 {
+    private $previousValue;
+    
     public function __construct($path)
     {
         $this->path = $path;
@@ -41,7 +43,7 @@ class Remove extends Operation implements Atomic
     private static function assertValidOperationContent($operationContent)
     {
         if (!property_exists($operationContent, 'path')) {
-            throw new Operation\Exception('"Add" Operations must contain a "path" and "value" member');
+            throw new Operation\Exception('"Remove" Operations must contain a "path" member');
         }
     }
 }
