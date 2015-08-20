@@ -4,10 +4,12 @@ namespace gamringer\JSONPatch\Operation;
 
 use gamringer\JSONPatch\Operation;
 use gamringer\JSONPointer\Pointer;
+use gamringer\JSONPointer;
 
 class Replace extends Operation implements Atomic
 {
     private $value;
+    private $previousValue;
 
     public function __construct($path, $value)
     {
@@ -17,12 +19,18 @@ class Replace extends Operation implements Atomic
 
     public function apply(Pointer $target)
     {
-
+        try {
+            $target->get($this->path);
+        } catch (JSONPointer\Exception $e) {
+            throw new Exception($e->getMessage(), null, $e);
+        }
+        
+        $this->previousValue = $target->set($this->path, $this->value);
     }
 
     public function revert(Pointer $target)
     {
-
+        $target->set($this->path, $this->previousValue);
     }
 
     public static function fromDecodedJSON($operationContent)
@@ -34,8 +42,8 @@ class Replace extends Operation implements Atomic
 
     private static function assertValidOperationContent($operationContent)
     {
-        if (!isset($operationContent->value)) {
-            throw new Operation\Exception('"Replace" Operations must contain a "value" member');
+        if (!property_exists($operationContent, 'path') || !property_exists($operationContent, 'value')) {
+            throw new Operation\Exception('"Replace" Operations must contain a "path" and "value" member');
         }
     }
 }
