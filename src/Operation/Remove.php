@@ -26,10 +26,6 @@ class Remove extends Operation implements Atomic
 
     public function revert(Pointer $target)
     {
-        if ($this->previousValue instanceof VoidValue) {
-            return;
-        }
-        
         $target->insert($this->path, $this->previousValue);
     }
 
