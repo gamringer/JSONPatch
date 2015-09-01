@@ -4,6 +4,8 @@ namespace gamringer\JSONPatch\Operation;
 
 use gamringer\JSONPatch\Operation;
 use gamringer\JSONPointer\Pointer;
+use gamringer\JSONPointer\VoidValue;
+use gamringer\JSONPointer;
 
 class Copy extends Operation implements Atomic
 {
@@ -17,12 +19,20 @@ class Copy extends Operation implements Atomic
 
     public function apply(Pointer $target)
     {
-
+        try {
+            $copiedValue = $target->get($this->from);
+            $this->previousValue = $target->insert($this->path, $copiedValue);
+        } catch (JSONPointer\Exception $e) {
+            throw new Exception($e->getMessage(), null, $e);
+        }
     }
 
     public function revert(Pointer $target)
     {
-
+        $target->remove($this->path);
+        if (!($this->previousValue instanceof VoidValue)) {
+            $target->insert($this->path, $this->previousValue);
+        }
     }
 
     public static function fromDecodedJSON($operationContent)
@@ -34,8 +44,10 @@ class Copy extends Operation implements Atomic
 
     private static function assertValidOperationContent($operationContent)
     {
-        if (!isset($operationContent->from)) {
-            throw new Operation\Exception('"Copy" Operations must contain a "from" member');
+        if (!property_exists($operationContent, 'path') || !property_exists($operationContent, 'from')) {
+            throw new Operation\Exception('"Copy" Operations must contain a "from" and "path" member');
         }
+
+        // Validate that the "path" doesn't contain "from"
     }
 }
