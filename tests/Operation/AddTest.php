@@ -81,7 +81,6 @@ class AddTest extends \PHPUnit_Framework_TestCase
      * Tests that objects gets reverted properly
      *
      * @dataProvider OperationApplyReplaceContentProvider
-     * @group wip
      */
     public function testRevert($operationDescription, $target, $expected, $path)
     {
