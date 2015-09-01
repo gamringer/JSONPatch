@@ -4,6 +4,8 @@ namespace gamringer\JSONPatch\Operation;
 
 use gamringer\JSONPatch\Operation;
 use gamringer\JSONPointer\Pointer;
+use gamringer\JSONPointer\VoidValue;
+use gamringer\JSONPointer;
 
 class Move extends Operation implements Atomic
 {
@@ -17,12 +19,23 @@ class Move extends Operation implements Atomic
 
     public function apply(Pointer $target)
     {
-
+        try {
+            $movedValue = $target->remove($this->from);
+            $this->previousValue = $target->insert($this->path, $movedValue);
+        } catch (JSONPointer\Exception $e) {
+            throw new Exception($e->getMessage(), null, $e);
+        }
     }
 
     public function revert(Pointer $target)
     {
+        $movedValue = $target->remove($this->path);
 
+        if (!($this->previousValue instanceof VoidValue)) {
+            $target->insert($this->path, $this->previousValue);
+        }
+
+        $target->insert($this->from, $movedValue);
     }
 
     public static function fromDecodedJSON($operationContent)
@@ -34,8 +47,8 @@ class Move extends Operation implements Atomic
 
     private static function assertValidOperationContent($operationContent)
     {
-        if (!isset($operationContent->from)) {
-            throw new Operation\Exception('"Move" Operations must contain a "from" member');
+        if (!property_exists($operationContent, 'path') || !property_exists($operationContent, 'from')) {
+            throw new Operation\Exception('"Move" Operations must contain a "from" and "path" member');
         }
     }
 }
