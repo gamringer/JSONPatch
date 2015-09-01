@@ -18,20 +18,9 @@ abstract class Operation
     {
         static::assertValidOperationContent($operationContent);
 
-        switch ($operationContent->op) {
-            case static::OP_TEST:
-                return Operation\Test::fromDecodedJSON($operationContent);
-            case static::OP_ADD:
-                return Operation\Add::fromDecodedJSON($operationContent);
-            case static::OP_REMOVE:
-                return Operation\Remove::fromDecodedJSON($operationContent);
-            case static::OP_REPLACE:
-                return Operation\Replace::fromDecodedJSON($operationContent);
-            case static::OP_MOVE:
-                return Operation\Move::fromDecodedJSON($operationContent);
-            case static::OP_COPY:
-                return Operation\Copy::fromDecodedJSON($operationContent);
-        }
+        $operationClass = __NAMESPACE__.'\\Operation\\'.ucfirst($operationContent->op);
+
+        return $operationClass::fromDecodedJSON($operationContent);
     }
 
     public function getPath()
@@ -49,7 +38,7 @@ abstract class Operation
             throw new Operation\Exception('All Operations must contain exactly one "op" member');
         }
 
-        $possibleOperations = [OP_TEST, OP_ADD, OP_REMOVE, OP_REPLACE, OP_MOVE, OP_COPY];
+        $possibleOperations = [static::OP_TEST, static::OP_ADD, static::OP_REMOVE, static::OP_REPLACE, static::OP_MOVE, static::OP_COPY];
         if (!in_array($operationContent->op, $possibleOperations)) {
             throw new Operation\Exception('Operation must be one of "'.implode('", "', $possibleOperations).'"');
         }
