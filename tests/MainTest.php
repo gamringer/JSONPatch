@@ -4,6 +4,8 @@ namespace gamringer\JSONPatch\Test;
 
 use \gamringer\JSONPatch\Patch;
 use \gamringer\JSONPatch\Operation;
+use \gamringer\JSONPatch;
+use \gamringer\JSONPointer\Pointer;
 
 class MainTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,25 +32,113 @@ class MainTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Tests that a patch can be created from JSON
+     */
+    public function testFromJSON()
+    {
+        $patch = new Patch();
+        $patch->addOperation(new Operation\Add('/foo', 'bar'));
+        $patch->addOperation(new Operation\Copy('/foo', '/bar'));
+        $patch->addOperation(new Operation\Move('/foo', '/bar'));
+        $patch->addOperation(new Operation\Remove('/foo'));
+        $patch->addOperation(new Operation\Replace('/foo', 'bar'));
+        $patch->addOperation(new Operation\Test('/foo', 'bar'));
+
+        $this->assertEquals($patch, Patch::fromJSON($patch));
+    }
+
+    /**
      * Tests that a patch applies properly
      */
     public function testApplyPatch()
     {
         $patch = new Patch();
-        //$op = new Resources\MockModifies();
-        //$patch->addOperation($op);
+        $op = new Resources\MockAtomic(function(Pointer $pointer){
+            $value = 'baz';
+            $pointer->set('/foo', $value);
+        });
+        $patch->addOperation($op);
 
-        //$patch->apply(['foo'=>'bar']);
-        //$this->assertEquals('[]', (string)$patch);
+        $target = ['foo'=>'bar'];
+        $patch->apply($target);
+        $this->assertEquals($target['foo'], 'baz');
     }
 
     /**
-     * Tests that invalid operations are rejected
+     * Tests that a patch reverts properly
+     */
+    public function testRevertPatch()
+    {
+        $patch = new Patch();
+        $op = new Resources\MockAtomic(function(Pointer $pointer){
+            $value = 'baz';
+            $pointer->set('/foo', $value);
+        }, function(Pointer $pointer){
+            $value = 'reverted';
+            $pointer->set('/foo', $value);
+        });
+        $patch->addOperation($op);
+        $op = new Resources\MockAtomic(function(Pointer $pointer){
+            throw new Operation\Exception('Forced Reversion');
+        });
+        $patch->addOperation($op);
+
+        $target = ['foo'=>'bar'];
+        try {
+            $patch->apply($target);
+        } catch (JSONPatch\Exception $e) {
+
+        }
+        $this->assertEquals($target['foo'], 'reverted');
+    }
+
+    /**
+     * Tests that a patch fails to revert
      *
      * @expectedException \gamringer\JSONPatch\Exception
-     *//*
-    public function testException()
+     */
+    public function testRevertFailPatch()
     {
-        throw new \gamringer\JSONPatch\Exception();
-    }*/
+        $patch = new Patch();
+        $op = new Resources\MockAtomic(function(Pointer $pointer){
+            $value = 'baz';
+            $pointer->set('/foo', $value);
+        }, function(Pointer $pointer){
+            throw new Operation\Exception('Reversion failed');
+        });
+        $patch->addOperation($op);
+        $op = new Resources\MockAtomic(function(Pointer $pointer){
+            throw new Operation\Exception('Forced Reversion');
+        });
+        $patch->addOperation($op);
+
+        $target = ['foo'=>'bar'];
+        $patch->apply($target);
+    }
+
+    /**
+     * Tests that invalid patch is
+     *
+     * @dataProvider invalidPatchProvider
+     * @expectedException \gamringer\JSONPatch\Exception
+     * @group wip
+     */
+    public function testInvalidPatch($patchContent)
+    {
+        Patch::fromJSON($patchContent);        
+    }
+
+    public function invalidPatchProvider()
+    {
+        return [
+            [null],
+            ['null'],
+            ['foo'],
+            ['['],
+            ['{'],
+            ['{}'],
+            ['"foo"'],
+            ['{"op":"test","path":"/foo","value":"bar"}'],
+        ];
+    }
 }
