@@ -24,34 +24,30 @@ class Patch
         return $patch;
     }
 
-    public function apply($target)
+    public function apply(&$target)
     {
+        $jsonPointer = new Pointer($target);
+        
         try {
-            $jsonPointer = new Pointer($target);
-        } catch(JSONPointer\Exception $e) {
-            throw new Exception('Could not initialize target', 0, $e);
-        }
-
-        try {
-            foreach ($this->operations as $operation) {
+            foreach ($this->operations as $i => $operation) {
                 $operation->apply($jsonPointer);
             }
-        } catch(Operation\Exception $e) {
-            $this->revert($jsonPointer);
+        } catch (Operation\Exception $e) {
+            $this->revert($jsonPointer, $i);
 
             throw new Exception('An Operation failed', 1, $e);
         }
     }
 
-    private function revert(Pointer $jsonPointer)
+    private function revert(Pointer $jsonPointer, $index)
     {
-        $this->operations = array_reverse($this->operations);
+        $operations = array_reverse(array_slice($this->operations, 0, $index));
 
         try {
-            foreach ($this->operations as $operation) {
+            foreach ($operations as $operation) {
                 $operation->revert($jsonPointer);
             }
-        } catch(Operation\Exception $e) {
+        } catch (Operation\Exception $e) {
             throw new Exception('An Operation failed and the reverting process also failed', 2, $e);
         }
     }
@@ -63,9 +59,7 @@ class Patch
 
     public function __toString()
     {
-        $operations = [];
-
-        return json_encode($this->operations);
+        return '['.implode(',', $this->operations).']';
     }
 
     private static function assertValidPatchContent($patchContent)
