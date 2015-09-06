@@ -50,4 +50,13 @@ class Copy extends Operation implements Atomic
 
         // Validate that the "path" doesn't contain "from"
     }
+
+    public function __toString()
+    {
+        return json_encode([
+            'op' => Operation::OP_COPY,
+            'path' => $this->path,
+            'from' => $this->from,
+        ]);
+    }
 }

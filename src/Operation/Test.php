@@ -152,4 +152,13 @@ class Test extends Operation implements Atomic
             throw new Operation\Exception('"Test" Operations must contain a "path" and "value" member');
         }
     }
+
+    public function __toString()
+    {
+        return json_encode([
+            'op' => Operation::OP_TEST,
+            'path' => $this->path,
+            'value' => $this->value,
+        ]);
+    }
 }

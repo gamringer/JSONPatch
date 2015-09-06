@@ -51,4 +51,13 @@ class Move extends Operation implements Atomic
             throw new Operation\Exception('"Move" Operations must contain a "from" and "path" member');
         }
     }
+
+    public function __toString()
+    {
+        return json_encode([
+            'op' => Operation::OP_MOVE,
+            'path' => $this->path,
+            'from' => $this->from,
+        ]);
+    }
 }

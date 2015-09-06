@@ -42,4 +42,12 @@ class Remove extends Operation implements Atomic
             throw new Operation\Exception('"Remove" Operations must contain a "path" member');
         }
     }
+
+    public function __toString()
+    {
+        return json_encode([
+            'op' => Operation::OP_REMOVE,
+            'path' => $this->path,
+        ]);
+    }
 }

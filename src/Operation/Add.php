@@ -60,4 +60,13 @@ class Add extends Operation implements Atomic
             throw new Operation\Exception('"Add" Operations must contain a "path" and "value" member');
         }
     }
+
+    public function __toString()
+    {
+        return json_encode([
+            'op' => Operation::OP_ADD,
+            'path' => $this->path,
+            'value' => $this->value,
+        ]);
+    }
 }

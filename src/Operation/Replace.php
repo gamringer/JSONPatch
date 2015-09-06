@@ -46,4 +46,13 @@ class Replace extends Operation implements Atomic
             throw new Operation\Exception('"Replace" Operations must contain a "path" and "value" member');
         }
     }
+
+    public function __toString()
+    {
+        return json_encode([
+            'op' => Operation::OP_REPLACE,
+            'path' => $this->path,
+            'value' => $this->value,
+        ]);
+    }
 }
