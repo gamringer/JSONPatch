@@ -1,5 +1,3 @@
-filter:
-    excluded_paths: [tests/*, examples/*]
 checks:
     php:
         code_rating: true
@@ -17,9 +15,9 @@ checks:
         fix_identation_4spaces: true
         fix_doc_comments: true
 tools:
-    external_code_coverage:
-        timeout: 600
-        runs: 3
+    php_sim: true
+    php_pdepend: true
+    php_analyzer: true
     php_code_coverage: false
     php_code_sniffer:
         config:
@@ -32,3 +30,7 @@ tools:
     php_cpd:
         enabled: true
         excluded_dirs: [vendor, tests]
+filter:
+    excluded_paths:
+        - tests/*
+        - examples/*
