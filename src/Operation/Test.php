@@ -38,29 +38,19 @@ class Test extends Operation implements Atomic
 
     private function assertEquals($expected, $actual)
     {
-        switch (gettype($expected)) {
-            case 'object':
-                $this->assertObjectsEquals($expected, $actual);
-                break;
+        $assertionMethods = [
+            'object' => 'assertObjectsEquals',
+            'array' => 'assertArraysEquals',
+            'string' => 'assertStringsEquals',
+            'double' => 'assertNumbersEquals',
+            'integer' => 'assertNumbersEquals',
+            'boolean' => 'assertLiteralEquals',
+            'NULL' => 'assertLiteralEquals',
+        ];
 
-            case 'array':
-                $this->assertArraysEquals($expected, $actual);
-                break;
-
-            case 'string':
-                $this->assertStringsEquals($expected, $actual);
-                break;
-
-            case 'double':
-            case 'integer':
-                $this->assertNumbersEquals($expected, $actual);
-                break;
-
-            case 'boolean':
-            case 'NULL':
-                $this->assertLiteralEquals($expected, $actual);
-                break;
-        }
+        $type = gettype($expected);
+        $assertionMethodName = $assertionMethods[$type];
+        $this->$assertionMethodName($expected, $actual);
     }
 
     private function assertStringsEquals($expected, $actual)
