@@ -38,7 +38,12 @@ abstract class Operation
             throw new Operation\Exception('All Operations must contain exactly one "op" member');
         }
 
-        $possibleOperations = [
+        self::assertKnownOperation($operationContent->op);
+    }
+
+    private static function assertKnownOperation($operation)
+    {
+        $knownOperations = [
             self::OP_TEST,
             self::OP_ADD,
             self::OP_REMOVE,
@@ -47,8 +52,8 @@ abstract class Operation
             self::OP_COPY
         ];
         
-        if (!in_array($operationContent->op, $possibleOperations)) {
-            throw new Operation\Exception('Operation must be one of "'.implode('", "', $possibleOperations).'"');
+        if (!in_array($operation, $knownOperations)) {
+            throw new Operation\Exception('Operation must be one of "'.implode('", "', $knownOperations).'"');
         }
     }
 }
