@@ -11,7 +11,6 @@ class Add extends Operation implements Atomic
 {
     private $value;
 
-    private $previousValueExists;
     private $previousValue;
 
     public function __construct($path, $value)
