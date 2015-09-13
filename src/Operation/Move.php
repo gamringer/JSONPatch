@@ -11,6 +11,8 @@ class Move extends Operation implements Atomic
 {
     private $from;
 
+    private $previousValue;
+
     public function __construct($path, $from)
     {
         $this->path = $path;

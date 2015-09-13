@@ -10,6 +10,8 @@ use gamringer\JSONPointer;
 class Copy extends Operation implements Atomic
 {
     private $from;
+    
+    private $previousValue;
 
     public function __construct($path, $from)
     {

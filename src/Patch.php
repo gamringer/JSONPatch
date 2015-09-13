@@ -14,7 +14,7 @@ class Patch
         $patch = new static();
 
         $patchContent = json_decode($patchContent);
-        static::assertValidPatchContent($patchContent);
+        self::assertValidPatchContent($patchContent);
 
         foreach ($patchContent as $operationContent) {
             $operation = Operation::fromDecodedJSON($operationContent);
