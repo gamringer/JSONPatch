@@ -6,5 +6,5 @@ use gamringer\JSONPointer\Pointer;
 
 interface Appliable
 {
-	public function apply(Pointer $target);
+    public function apply(Pointer $target);
 }

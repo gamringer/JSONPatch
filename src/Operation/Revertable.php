@@ -6,5 +6,5 @@ use gamringer\JSONPointer\Pointer;
 
 interface Revertable
 {
-	public function revert(Pointer $target);
+    public function revert(Pointer $target);
 }
