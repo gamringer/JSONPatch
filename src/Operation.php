@@ -16,7 +16,7 @@ abstract class Operation
 
     public static function fromDecodedJSON($operationContent)
     {
-        static::assertValidOperationContent($operationContent);
+        self::assertValidOperationContent($operationContent);
 
         $operationClass = __NAMESPACE__.'\\Operation\\'.ucfirst($operationContent->op);
 
@@ -39,12 +39,12 @@ abstract class Operation
         }
 
         $possibleOperations = [
-            static::OP_TEST,
-            static::OP_ADD,
-            static::OP_REMOVE,
-            static::OP_REPLACE,
-            static::OP_MOVE,
-            static::OP_COPY
+            self::OP_TEST,
+            self::OP_ADD,
+            self::OP_REMOVE,
+            self::OP_REPLACE,
+            self::OP_MOVE,
+            self::OP_COPY
         ];
         
         if (!in_array($operationContent->op, $possibleOperations)) {

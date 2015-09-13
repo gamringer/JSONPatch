@@ -37,9 +37,9 @@ class Copy extends Operation implements Atomic
 
     public static function fromDecodedJSON($operationContent)
     {
-        static::assertValidOperationContent($operationContent);
+        self::assertValidOperationContent($operationContent);
 
-        return new static($operationContent->path, $operationContent->from);
+        return new self($operationContent->path, $operationContent->from);
     }
 
     private static function assertValidOperationContent($operationContent)

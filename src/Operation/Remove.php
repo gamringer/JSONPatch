@@ -31,9 +31,9 @@ class Remove extends Operation implements Atomic
 
     public static function fromDecodedJSON($operationContent)
     {
-        static::assertValidOperationContent($operationContent);
+        self::assertValidOperationContent($operationContent);
 
-        return new static($operationContent->path);
+        return new self($operationContent->path);
     }
 
     private static function assertValidOperationContent($operationContent)

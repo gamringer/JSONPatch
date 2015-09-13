@@ -49,9 +49,9 @@ class Add extends Operation implements Atomic
 
     public static function fromDecodedJSON($operationContent)
     {
-        static::assertValidOperationContent($operationContent);
+        self::assertValidOperationContent($operationContent);
 
-        return new static($operationContent->path, $operationContent->value);
+        return new self($operationContent->path, $operationContent->value);
     }
 
     private static function assertValidOperationContent($operationContent)
