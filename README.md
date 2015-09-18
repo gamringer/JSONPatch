@@ -40,7 +40,7 @@ $operation->apply($target);
 
 ```
 
-##Operations can also be constructed fonr a JSON string
+##Operations can also be constructed from a JSON string
 ```php
 <?php
 
