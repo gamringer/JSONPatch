@@ -65,4 +65,46 @@ $patch->addOperation(new \gamringer\JSONPatch\Operation\Test('/foo', 'bar'));
 $patch = \gamringer\JSONPatch\Patch::fromJSON('[{"op":"add","path":"/foo","value":"bar"},{"op":"test","path":"/foo","value":"bar"}]');
 ```
 
-##A patch can be applied, as well as reverted
+##A patch can be applied
+```php
+<?php
+
+$patch = \gamringer\JSONPatch\Patch::fromJSON('[{"op":"add","path":"/foo","value":"bar"},{"op":"test","path":"/foo","value":"bar"}]');
+
+$target = [];
+$patch->apply($target);
+
+var_dump($target);
+
+/* Results:
+
+array(1) {
+  'foo' =>
+  string(3) "bar"
+}
+
+*/
+
+```
+If the patch fails, it gets completely reverted and an exception is thrown.
+
+```php
+<?php
+
+$patch = \gamringer\JSONPatch\Patch::fromJSON('[{"op":"add","path":"/foo","value":"bar"},{"op":"test","path":"/foo","value":"baz"}]');
+
+$target = [];
+
+try {
+    $patch->apply($target);
+} catch (\gamringer\JSONPatch\Exception $e) {
+    var_dump($target);
+}
+
+/* Results:
+
+array(0) {}
+
+*/
+
+```
