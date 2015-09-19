@@ -12,10 +12,14 @@
     ],
     "require": {
         "php": ">=5.4",
-        "gamringer/php-json-pointer": ">=0.1"
+        "gamringer/php-json-pointer": "~3.1"
     },
     "require-dev": {
-        "phpunit/phpunit" : "4.*"
+        "phpunit/phpunit" : "@stable",
+        "pdepend/pdepend" : "@stable",
+        "squizlabs/php_codesniffer": "@stable",
+        "phpmd/phpmd" : "@stable",
+        "sebastian/phpcpd" : "@stable"
     },
     "autoload": {
         "psr-4": {
