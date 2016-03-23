@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace gamringer\JSONPatch\Operation;
 
@@ -9,11 +10,11 @@ use gamringer\JSONPointer;
 
 class Copy extends Operation implements Atomic
 {
-    private $from;
+    private $from = '';
     
     private $previousValue;
 
-    public function __construct($path, $from)
+    public function __construct(string $path, string $from)
     {
         $this->path = $path;
         $this->from = $from;
@@ -25,7 +26,7 @@ class Copy extends Operation implements Atomic
             $copiedValue = $target->get($this->from);
             $this->previousValue = $target->insert($this->path, $copiedValue);
         } catch (JSONPointer\Exception $e) {
-            throw new Exception($e->getMessage(), null, $e);
+            throw new Exception($e->getMessage(), 0, $e);
         }
     }
 
@@ -37,7 +38,7 @@ class Copy extends Operation implements Atomic
         }
     }
 
-    public static function fromDecodedJSON($operationContent)
+    public static function fromDecodedJSON($operationContent): self
     {
         self::assertValidOperationContent($operationContent);
 
@@ -53,7 +54,7 @@ class Copy extends Operation implements Atomic
         // Validate that the "path" doesn't contain "from"
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return json_encode([
             'op' => Operation::OP_COPY,

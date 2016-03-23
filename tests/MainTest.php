@@ -131,7 +131,6 @@ class MainTest extends \PHPUnit_Framework_TestCase
     public function invalidPatchProvider()
     {
         return [
-            [null],
             ['null'],
             ['foo'],
             ['['],

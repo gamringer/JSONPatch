@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace gamringer\JSONPatch\Operation;
 
@@ -10,7 +11,7 @@ class Test extends Operation implements Atomic
 {
     private $value;
 
-    public function __construct($path, $value)
+    public function __construct(string $path, $value)
     {
         $this->assertValueTestability($value);
 
@@ -30,7 +31,7 @@ class Test extends Operation implements Atomic
         try {
             $targetValue = $target->get($this->path);
         } catch (JSONPointer\Exception $e) {
-            throw new Exception($e->getMessage(), null, $e);
+            throw new Exception($e->getMessage(), 0, $e);
         }
 
         $this->assertEquals($this->value, $targetValue);
@@ -129,7 +130,7 @@ class Test extends Operation implements Atomic
 
     }
 
-    public static function fromDecodedJSON($operationContent)
+    public static function fromDecodedJSON($operationContent): self
     {
         self::assertValidOperationContent($operationContent);
 
@@ -143,7 +144,7 @@ class Test extends Operation implements Atomic
         }
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return json_encode([
             'op' => Operation::OP_TEST,

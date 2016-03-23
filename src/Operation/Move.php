@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace gamringer\JSONPatch\Operation;
 
@@ -9,11 +10,11 @@ use gamringer\JSONPointer;
 
 class Move extends Operation implements Atomic
 {
-    private $from;
+    private $from = '';
 
     private $previousValue;
 
-    public function __construct($path, $from)
+    public function __construct(string $path, string $from)
     {
         $this->path = $path;
         $this->from = $from;
@@ -25,7 +26,7 @@ class Move extends Operation implements Atomic
             $movedValue = $target->remove($this->from);
             $this->previousValue = $target->insert($this->path, $movedValue);
         } catch (JSONPointer\Exception $e) {
-            throw new Exception($e->getMessage(), null, $e);
+            throw new Exception($e->getMessage(), 0, $e);
         }
     }
 
@@ -40,7 +41,7 @@ class Move extends Operation implements Atomic
         $target->insert($this->from, $movedValue);
     }
 
-    public static function fromDecodedJSON($operationContent)
+    public static function fromDecodedJSON($operationContent): self
     {
         self::assertValidOperationContent($operationContent);
 
@@ -54,7 +55,7 @@ class Move extends Operation implements Atomic
         }
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return json_encode([
             'op' => Operation::OP_MOVE,

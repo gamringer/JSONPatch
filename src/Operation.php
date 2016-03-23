@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace gamringer\JSONPatch;
 
@@ -12,7 +13,7 @@ abstract class Operation
     const OP_MOVE = 'move';
     const OP_COPY = 'copy';
 
-    protected $path;
+    protected $path = '';
 
     public static function fromDecodedJSON($operationContent)
     {
@@ -23,7 +24,7 @@ abstract class Operation
         return $operationClass::fromDecodedJSON($operationContent);
     }
 
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }

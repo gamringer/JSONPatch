@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace gamringer\JSONPatch\Operation;
 
@@ -11,7 +12,7 @@ class Replace extends Operation implements Atomic
     private $value;
     private $previousValue;
 
-    public function __construct($path, $value)
+    public function __construct(string $path, $value)
     {
         $this->path = $path;
         $this->value = $value;
@@ -22,7 +23,7 @@ class Replace extends Operation implements Atomic
         try {
             $target->get($this->path);
         } catch (JSONPointer\Exception $e) {
-            throw new Exception($e->getMessage(), null, $e);
+            throw new Exception($e->getMessage(), 0, $e);
         }
         
         $this->previousValue = $target->set($this->path, $this->value);
@@ -33,7 +34,7 @@ class Replace extends Operation implements Atomic
         $target->set($this->path, $this->previousValue);
     }
 
-    public static function fromDecodedJSON($operationContent)
+    public static function fromDecodedJSON($operationContent): self
     {
         self::assertValidOperationContent($operationContent);
 
@@ -47,7 +48,7 @@ class Replace extends Operation implements Atomic
         }
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return json_encode([
             'op' => Operation::OP_REPLACE,

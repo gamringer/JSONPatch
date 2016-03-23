@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace gamringer\JSONPatch\Operation;
 
@@ -13,7 +14,7 @@ class Add extends Operation implements Atomic
 
     private $previousValue;
 
-    public function __construct($path, $value)
+    public function __construct(string $path, $value)
     {
         $this->assertValueAddability($value);
 
@@ -33,7 +34,7 @@ class Add extends Operation implements Atomic
         try {
             $this->previousValue = $target->insert($this->path, $this->value);
         } catch (JSONPointer\Exception $e) {
-            throw new Exception($e->getMessage(), null, $e);
+            throw new Exception($e->getMessage(), 0, $e);
         }
     }
 
@@ -46,7 +47,7 @@ class Add extends Operation implements Atomic
         }
     }
 
-    public static function fromDecodedJSON($operationContent)
+    public static function fromDecodedJSON($operationContent): self
     {
         self::assertValidOperationContent($operationContent);
 
@@ -60,7 +61,7 @@ class Add extends Operation implements Atomic
         }
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return json_encode([
             'op' => Operation::OP_ADD,

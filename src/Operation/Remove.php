@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace gamringer\JSONPatch\Operation;
 
@@ -10,7 +11,7 @@ class Remove extends Operation implements Atomic
 {
     private $previousValue;
     
-    public function __construct($path)
+    public function __construct(string $path)
     {
         $this->path = $path;
     }
@@ -20,7 +21,7 @@ class Remove extends Operation implements Atomic
         try {
             $this->previousValue = $target->remove($this->path);
         } catch (JSONPointer\Exception $e) {
-            throw new Exception($e->getMessage(), null, $e);
+            throw new Exception($e->getMessage(), 0, $e);
         }
     }
 
@@ -29,7 +30,7 @@ class Remove extends Operation implements Atomic
         $target->insert($this->path, $this->previousValue);
     }
 
-    public static function fromDecodedJSON($operationContent)
+    public static function fromDecodedJSON($operationContent): self
     {
         self::assertValidOperationContent($operationContent);
 
@@ -43,7 +44,7 @@ class Remove extends Operation implements Atomic
         }
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return json_encode([
             'op' => Operation::OP_REMOVE,

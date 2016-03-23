@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace gamringer\JSONPatch;
 
@@ -9,12 +10,11 @@ class Patch
 {
     protected $operations = [];
 
-    public static function fromJSON($patchContent)
+    public static function fromJSON(string $patchContent)
     {
         $patch = new static();
 
-        $patchContent = json_decode($patchContent);
-        self::assertValidPatchContent($patchContent);
+        $patchContent = self::decodePatchContent($patchContent);
 
         foreach ($patchContent as $operationContent) {
             $operation = Operation::fromDecodedJSON($operationContent);
@@ -62,14 +62,17 @@ class Patch
         return '['.implode(',', $this->operations).']';
     }
 
-    private static function assertValidPatchContent($patchContent)
+    private static function decodePatchContent($patchContent)
     {
-        if ($patchContent === null && strtolower($patchContent) != 'null') {
+        $patchContent = json_decode($patchContent);
+        if (json_last_error() != JSON_ERROR_NONE) {
             throw new Exception('Content of source patch file could not be decoded', 3);
         }
 
         if (!is_array($patchContent)) {
             throw new Exception('Content of source patch file is not a collection', 4);
         }
+
+        return $patchContent;
     }
 }
